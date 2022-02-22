@@ -1,0 +1,59 @@
+@page "/Auctions/{AuctionId:int}"
+@using Model.Entities.Auctions
+@using Domain.Repositories.Interfaces
+@inject IAuctionRepository _repository;
+
+<h3 class="text-info">Auctiondata</h3>
+
+@if (Auction is not null) {
+    <div class="card">
+        <div class="card-body">
+            <div class="text-info card-title">@Auction.Topic</div>
+            <p>
+                <table class="table table-striped table-sm text-muted">
+                    <thead class="text-info">
+                    <tr class="small">
+                        <th>Label</th>
+                        <th>Ausrufungspreis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @if (Auction.Artwork.CoolList.Count > 0)
+                    {
+                        @foreach (var x in Auction.Artwork.CoolList)
+                        {
+                            <tr>
+                                <td>@x.Artwork.Name</td>
+                                <td>@x.Artwork.AestimatedValue</td>
+                            </tr>
+                        }
+                    }
+                    else
+                    {
+                        <tr>No data ...</tr>
+                    }
+                    </tbody>
+                </table>
+            </p>
+        </div>
+    </div>
+}
+else {
+    <span class="text-muted">@message</span>
+}
+
+
+@code {
+    [Parameter]
+    public int AuctionID { get; set; }
+
+    public Auction Auction { get; set; }
+
+    public string message { get; set; } = "... Loading";
+    
+    protected override async Task OnParametersSetAsync()
+    {
+        Auction = await _repository.ReadAsync(AuctionID);
+    }
+
+}
