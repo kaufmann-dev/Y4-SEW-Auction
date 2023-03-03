@@ -4,6 +4,7 @@ using Model.Entities.Artworks;
 
 namespace Model.Entities.Auctions;
 
+[Table("AUCTION_HAS_ITEMS_JT")]
 public class AuctionItems
 {
     [Column("ARTWORK_ID")]
