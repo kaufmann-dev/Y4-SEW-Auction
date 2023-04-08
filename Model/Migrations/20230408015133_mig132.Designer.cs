@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Model.Configurations;
 
@@ -10,9 +11,10 @@ using Model.Configurations;
 namespace Model.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    partial class AuctionDbContextModelSnapshot : ModelSnapshot
+    [Migration("20230408015133_mig132")]
+    partial class mig132
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -90,7 +92,7 @@ namespace Model.Migrations
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("AUCTION_HAS_ITEMS_JT");
+                    b.ToTable("AuctionItems");
                 });
 
             modelBuilder.Entity("Model.Entities.Auctions.Customer", b =>
