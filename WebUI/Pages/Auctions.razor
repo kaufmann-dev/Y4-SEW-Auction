@@ -1,6 +1,7 @@
 @page "/auction/{AuctionId:int}"
 @using Model.Entities.Auctions
 @using Domain.Repositories.Interfaces
+
 @inject IAuctionRepository _repository;
 
 <h3 class="text-info">Auctiondata</h3>
@@ -18,9 +19,9 @@
                     </tr>
                     </thead>
                     <tbody>
-                    @if (Auction.Artwork.CoolList.Count > 0)
+                    @if (Auction.AuctionItems.Count > 0)
                     {
-                        @foreach (var x in Auction.Artwork.CoolList)
+                        @foreach (var x in Auction.AuctionItems)
                         {
                             <tr>
                                 <td>@x.Artwork.Name</td>
@@ -53,7 +54,7 @@ else {
     
     protected override async Task OnParametersSetAsync()
     {
-        Auction = await _repository.ReadAsync(AuctionID);
+        Auction = await _repository.ReadGraphAsync(AuctionID);
     }
 
 }

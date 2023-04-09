@@ -34,7 +34,8 @@ public class AuctionDbContext : DbContext{
         builder.Entity<AuctionItems>().HasKey(a => new
         {
             a.ArtworkId,
-            a.CustomerId
+            a.CustomerId,
+            a.AuctionId
         });
 
         builder.Entity<AuctionItems>()
@@ -48,8 +49,13 @@ public class AuctionDbContext : DbContext{
             .HasForeignKey(m => m.ArtworkId);
 
         builder.Entity<AuctionItems>()
-            .HasOne(a => a.Artwork)
-            .WithMany(a => a.CoolList)
-            .HasForeignKey(a => a.ArtworkId);
+            .HasOne(a => a.Auction)
+            .WithMany()
+            .HasForeignKey(a => a.AuctionId);
+
+        builder.Entity<AuctionItems>()
+            .HasOne(a => a.Auction)
+            .WithMany(a => a.AuctionItems)
+            .HasForeignKey(a => a.AuctionId);
     }
 }
