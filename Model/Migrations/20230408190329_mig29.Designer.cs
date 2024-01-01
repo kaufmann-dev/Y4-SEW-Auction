@@ -11,8 +11,8 @@ using Model.Configurations;
 namespace Model.Migrations
 {
     [DbContext(typeof(AuctionDbContext))]
-    [Migration("20220128090236_mig1")]
-    partial class mig1
+    [Migration("20230408190329_mig29")]
+    partial class mig29
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -84,15 +84,21 @@ namespace Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("CUSTOMER_ID");
 
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("int")
+                        .HasColumnName("AUCTION_ID");
+
                     b.Property<int>("Price")
                         .HasColumnType("int")
                         .HasColumnName("PRICE");
 
-                    b.HasKey("ArtworkId", "CustomerId");
+                    b.HasKey("ArtworkId", "CustomerId", "AuctionId");
+
+                    b.HasIndex("AuctionId");
 
                     b.HasIndex("CustomerId");
 
-                    b.ToTable("AuctionItems");
+                    b.ToTable("AUCTION_HAS_ITEMS_JT");
                 });
 
             modelBuilder.Entity("Model.Entities.Auctions.Customer", b =>
@@ -101,12 +107,6 @@ namespace Model.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("CUSTOMER_ID");
-
-                    b.Property<string>("CustomerNr")
-                        .IsRequired()
-                        .HasMaxLength(12)
-                        .HasColumnType("varchar(12)")
-                        .HasColumnName("CUSTOMER_NR");
 
                     b.Property<string>("LastName")
                         .IsRequired()
@@ -178,6 +178,12 @@ namespace Model.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("Model.Entities.Auctions.Auction", "Auction")
+                        .WithMany("AuctionItems")
+                        .HasForeignKey("AuctionId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Model.Entities.Auctions.Customer", "Customer")
                         .WithMany()
                         .HasForeignKey("CustomerId")
@@ -186,7 +192,14 @@ namespace Model.Migrations
 
                     b.Navigation("Artwork");
 
+                    b.Navigation("Auction");
+
                     b.Navigation("Customer");
+                });
+
+            modelBuilder.Entity("Model.Entities.Auctions.Auction", b =>
+                {
+                    b.Navigation("AuctionItems");
                 });
 #pragma warning restore 612, 618
         }

@@ -18,6 +18,4 @@ public class AArtwork {
     [Required]
     [Column("AESTIMATED_VALUE")]
     public int AestimatedValue { get; set; }
-    
-    public List<AuctionItems> CoolList = new List<AuctionItems>();
 }

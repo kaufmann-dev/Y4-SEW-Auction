@@ -18,6 +18,7 @@ public class Auction {
     [Required, StringLength(100)]
     [Column("TOPIC")]
     public string Topic { get; set; }
+    
 
-    public AArtwork Artwork = new AArtwork();
+    public List<AuctionItems> AuctionItems { get; set; }
 }

@@ -82,11 +82,17 @@ namespace Model.Migrations
                         .HasColumnType("int")
                         .HasColumnName("CUSTOMER_ID");
 
+                    b.Property<int>("AuctionId")
+                        .HasColumnType("int")
+                        .HasColumnName("AUCTION_ID");
+
                     b.Property<int>("Price")
                         .HasColumnType("int")
                         .HasColumnName("PRICE");
 
-                    b.HasKey("ArtworkId", "CustomerId");
+                    b.HasKey("ArtworkId", "CustomerId", "AuctionId");
+
+                    b.HasIndex("AuctionId");
 
                     b.HasIndex("CustomerId");
 
@@ -165,8 +171,14 @@ namespace Model.Migrations
             modelBuilder.Entity("Model.Entities.Auctions.AuctionItems", b =>
                 {
                     b.HasOne("Model.Entities.Artworks.AArtwork", "Artwork")
-                        .WithMany("CoolList")
+                        .WithMany()
                         .HasForeignKey("ArtworkId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Model.Entities.Auctions.Auction", "Auction")
+                        .WithMany("AuctionItems")
+                        .HasForeignKey("AuctionId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -178,12 +190,14 @@ namespace Model.Migrations
 
                     b.Navigation("Artwork");
 
+                    b.Navigation("Auction");
+
                     b.Navigation("Customer");
                 });
 
-            modelBuilder.Entity("Model.Entities.Artworks.AArtwork", b =>
+            modelBuilder.Entity("Model.Entities.Auctions.Auction", b =>
                 {
-                    b.Navigation("CoolList");
+                    b.Navigation("AuctionItems");
                 });
 #pragma warning restore 612, 618
         }

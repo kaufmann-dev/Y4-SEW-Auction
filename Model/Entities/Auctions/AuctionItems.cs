@@ -15,6 +15,10 @@ public class AuctionItems
     public int CustomerId { get; set; }
     public Customer Customer { get; set; }
     
+    [Column("AUCTION_ID")]
+    public int AuctionId { get; set; }
+    public Auction Auction { get; set; }
+    
     [Column("PRICE")]
     [Required]
     public int Price { get; set; }
